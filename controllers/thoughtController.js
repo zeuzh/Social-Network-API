@@ -76,12 +76,12 @@ module.exports = {
       { $addToSet: { reactions: body } },
       { new: true }
     )
-      .then((addedFriendData) => {
-        if (!addedFriendData) {
-          res.status(404).json({ message: "No Thought found with this ID!" });
+      .then((addedReactionData) => {
+        if (!addedReactionData) {
+          res.status(404).json({ message: "No Reaction found with this ID!" });
           return;
         }
-        res.json(addedFriendData);
+        res.json(addedReactionData);
       })
       .catch((err) => res.json(err));
   },
@@ -91,8 +91,12 @@ module.exports = {
       { $pull: { reactions: { reactionId: params.reactionId } } },
       { new: true }
     )
-      .then((deletedFriendData) => {
-        res.json(deletedFriendData);
+      .then((deletedReactionData) => {
+        if (!deletedReactionData) {
+            res.status(404).json({ message: "No Reaction found with this ID!" });
+            return;
+          }
+        res.json(deletedReactionData);
       })
       .catch((err) => res.json(err));
   },
